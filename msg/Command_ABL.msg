@@ -1,2 +1,2 @@
-origarm_ros/Seg_ABL[4] segment
+origarm_uw/Seg_ABL[4] segment
 

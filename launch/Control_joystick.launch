@@ -1,0 +1,7 @@
+<launch>
+    <node pkg="joy" name="joy_node" type="joy_node"> 
+    <node pkg="origarm_uw" name="keyboard_node" type="keyboard_node">
+    <node pkg="origarm_uw" name="joystick_node" type="joystick" output="screen"  launch-prefix="gnome-terminal -x "/>
+    <node pkg="origarm_uw" name="ABLController" type="ABL_controller"/>
+    <node pkg="rqt_graph" name="rqt_graph_node" type="rqt_graph"/>   
+</launch>

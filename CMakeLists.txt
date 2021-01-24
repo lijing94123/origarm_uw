@@ -7,7 +7,7 @@ project(origarm_uw)
 ## Find catkin macros and libraries
 ## if COMPONENTS list like find_package(catkin REQUIRED COMPONENTS xyz)
 ## is used, also find other catkin packages
-find_package(catkin REQUIRED COMPONENTS
+find_package(catkin REQUIRED
   roscpp
   rospy
   std_msgs
@@ -15,8 +15,6 @@ find_package(catkin REQUIRED COMPONENTS
   message_generation
 )
 
-## System dependencies are found with CMake's conventions
-# find_package(Boost REQUIRED COMPONENTS system)
 find_package(cmake_modules REQUIRED)
 
 ## Uncomment this if the package has a setup.py. This macro ensures
@@ -49,14 +47,20 @@ find_package(cmake_modules REQUIRED)
 ##   * add every package in MSG_DEP_SET to generate_messages(DEPENDENCIES ...)
 
 ## Generate messages in the 'msg' folder
-add_message_files(
+add_message_files(FILES
   Command_Position.msg
   Command_ABL.msg
+  Command_Pre_Open.msg
 
   Seg_ABL.msg
   Seg_Pre.msg
   Valve.msg
-    	
+
+  States.msg
+  Sensor.msg
+  Sensor_Seg.msg
+  Sensor_Act.msg
+
   keynumber.msg
   modenumber.msg
   segnumber.msg
@@ -112,12 +116,14 @@ generate_messages(
 ## LIBRARIES: libraries you create in this project that dependent projects also need
 ## CATKIN_DEPENDS: catkin_packages dependent projects also need
 ## DEPENDS: system dependencies of this project that dependent projects also need
-catkin_package(
+#catkin_package(
+#  CATKIN_DEPENDS roscpp rospy std_msgs
+#  message_runtime
 #  INCLUDE_DIRS include
 #  LIBRARIES origarm_uw
 #  CATKIN_DEPENDS roscpp rospy std_msgs
 #  DEPENDS system_lib
-)
+#)
 
 ###########
 ## Build ##
@@ -126,15 +132,17 @@ catkin_package(
 ## Specify additional locations of header files
 ## Your package locations should be listed before other locations
 include_directories(
-# include
-  ${catkin_INCLUDE_DIRS}
+ include ${catkin_INCLUDE_DIRS}
 )
 
 ## Declare a C++ library
-# add_library(${PROJECT_NAME}
-#   src/${PROJECT_NAME}/origarm_uw.cpp
-# )
-
+add_library(PID_controller
+  src/PID_controller.cpp
+ )
+add_dependencies(PID_controller ${${PROJECT_NAME}_EXPORTED_TARGETS} ${catkin_EXPORTED_TARGETS})
+target_link_libraries(PID_controller
+  ${catkin_LIBRARIES}
+)
 
 ## Add cmake target dependencies of the library
 ## as an example, code may need to be generated before libraries
@@ -183,11 +191,11 @@ include_directories(
 
 ## Mark libraries for installation
 ## See http://docs.ros.org/melodic/api/catkin/html/howto/format1/building_libraries.html
-install(TARGETS ${PROJECT_NAME}
-   ARCHIVE DESTINATION ${CATKIN_PACKAGE_LIB_DESTINATION}
-   LIBRARY DESTINATION ${CATKIN_PACKAGE_LIB_DESTINATION}
-   RUNTIME DESTINATION ${CATKIN_GLOBAL_BIN_DESTINATION}
- )
+#install(TARGETS ${PROJECT_NAME}
+#   ARCHIVE DESTINATION ${CATKIN_PACKAGE_LIB_DESTINATION}
+#   LIBRARY DESTINATION ${CATKIN_PACKAGE_LIB_DESTINATION}
+#   RUNTIME DESTINATION ${CATKIN_GLOBAL_BIN_DESTINATION}
+# )
 
 ## Mark cpp header files for installation
 # install(DIRECTORY include/${PROJECT_NAME}/
@@ -212,27 +220,21 @@ install(FILES
 #   target_link_libraries(${PROJECT_NAME}-test ${PROJECT_NAME})
 # endif()
 
-add_executable(ABL_controller
-  src/ABL_controller.cpp
-)
-add_dependencies(ABL_controller ${${PROJECT_NAME}_EXPORTED_TARGETS} ${catkin_EXPORTED_TARGETS} )
-target_link_libraries(ABL_controller
+add_executable(ABLController src/ABLController.cpp)
+add_dependencies(ABLController ${${PROJECT_NAME}_EXPORTED_TARGETS} ${catkin_EXPORTED_TARGETS} )
+target_link_libraries(ABLController
   ${catkin_LIBRARIES}
 )
 
-add_executable(joy_teleopt src/joy_teleopt.cpp) 
-add_dependencies(joy_teleopt ${${PROJECT_NAME}_EXPORTED_TARGETS} ${catkin_EXPORTED_TARGETS} )
-target_link_libraries(joy_teleopt             
+add_executable(joystick src/joystick.cpp) 
+add_dependencies(joystick ${${PROJECT_NAME}_EXPORTED_TARGETS} ${catkin_EXPORTED_TARGETS} )
+target_link_libraries(joystick             
    ${catkin_LIBRARIES}
  )
 
-add_executable(keyboard src/keyboard.cpp) 
-add_dependencies(keyboard ${${PROJECT_NAME}_EXPORTED_TARGETS} ${catkin_EXPORTED_TARGETS} )
-target_link_libraries(keyboard             
+add_executable(keyboard_node src/keyboard_node.cpp) 
+add_dependencies(keyboard_node ${${PROJECT_NAME}_EXPORTED_TARGETS} ${catkin_EXPORTED_TARGETS} )
+target_link_libraries(keyboard_node             
    ${catkin_LIBRARIES}
  )
 
-
-
-## Add folders to be run by python nosetests
-# catkin_add_nosetests(test)

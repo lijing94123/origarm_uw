@@ -1,7 +1,7 @@
 #include <ros/ros.h>
 #include <std_msgs/String.h>
 #include <std_msgs/Int16.h>
-#include "origarm_ros/keynumber.h"
+#include "origarm_uw/keynumber.h"
 
 #include <iostream>
 #include <stdio.h>
@@ -94,11 +94,11 @@ int main(int argc, char** argv)
 		exit(1);
 	}
 	
-	ros::init(argc, argv, "keyboard");
+	ros::init(argc, argv, "keyboard_node");
 	ros::NodeHandle n;
-	ros::Publisher pub = n.advertise<origarm_ros::keynumber>("key_number",100);
+	ros::Publisher pub = n.advertise<origarm_uw::keynumber>("key_number",100);
 	ros::Rate r(100);
-	origarm_ros::keynumber keycode;
+	origarm_uw::keynumber keycode;
 	while (ros::ok())
 	{		
 		if (read(fd, &event, sizeof(event)) == sizeof(event))
