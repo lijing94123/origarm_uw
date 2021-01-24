@@ -60,7 +60,6 @@ PID_Type *alphaPID  = newPID(0.8, 0.005, 0, 0.005, 0.6, 1);
 PID_Type *betaPID   = newPID(0.8, 0.005, 0, 0.005, 0.5, 1.5);
 PID_Type *lengthPID = newPID(  1,  0.01, 0, 0.005, 0.1, 0.1);
 
-
 void initParameter()
 {
   for (int i = 0; i < SEGNUM; i++)
@@ -169,7 +168,6 @@ class ABL_controller
 
     void ABL_joy(const origarm_uw::Command_ABL& msg)
     {
-
       for (int i = 0; i < SEGNUM; i++)
       {
         ajoy[i] = msg.segment[i].A;
@@ -196,7 +194,6 @@ class ABL_controller
     private:
       ros::NodeHandle n_;
       ros::Subscriber sub1_;
-      ros::Subscriber sub2_;
       ros::Publisher pub_ ;
 
       origarm_uw::Command_Pre_Open Cmd_P_O;
@@ -206,7 +203,6 @@ class ABL_controller
 
 int main(int argc, char **argv)
 {
-
   ros::init(argc, argv, "ABL_controller_node");
 
   initParameter();
@@ -226,20 +222,7 @@ int main(int argc, char **argv)
     FeedbackController(feedbackFlag);
 
     ABL_controller_node.pub();
-
-    /*for (int i = 0; i < seg; i++)
-    {
-      printf("Command[%d]: %f %f %f %f %f %f\r\n", i, 
-        pressureD[i][0], 
-        pressureD[i][1],
-        pressureD[i][2], 
-        pressureD[i][3],
-        pressureD[i][4],
-        pressureD[i][5]);     
-    }*/
-
-    //ros::spinOnce();
-    
+   
     loop_rate.sleep();
   }
 

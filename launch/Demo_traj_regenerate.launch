@@ -1,0 +1,5 @@
+<launch>
+    <node pkg="origarm_uw" name="keyboard_node" type="keyboard_node" launch-prefix="xterm -e"/> 
+	<node pkg="origarm_uw" name="demo_traj_regenerate" type="demo_traj_regenerate"/>      
+    <node pkg="origarm_uw" name="ABL_controller_Node" type="ABLController"/> 
+</launch>

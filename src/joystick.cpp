@@ -18,6 +18,8 @@
 #include "origarm_uw/keynumber.h"
 #include "origarm_uw/modenumber.h"
 #include "origarm_uw/segnumber.h"
+#include <ros/time.h>
+#include "ros/package.h"
 
 #include "myData.h"
 
@@ -25,6 +27,7 @@ using namespace std;
 
 //save into files
 static int save_flag = 0;
+string trajPointFilePath = "";
 string trajPointFileName = "";
 ofstream savedata;
 
@@ -340,144 +343,158 @@ void writeABL()
 		length = CONSTRAIN(length, lengthmin, lengthmax);
 	}
 	else if (mode == 1)
-	{			
-		if (joyLy > 0.05)
+	{
+		if (segNumber >= 2)	
 		{
-			seg_alpha[segNumber] = seg_alpha[segNumber] + a_scale;
-		}
-		else if (joyLy < -0.05)
-		{
-			seg_alpha[segNumber] = seg_alpha[segNumber] - a_scale;
-		}
 
-		if (joyRx > 0.05)
-		{
-			if (joyRx > 0.5)
-			{
-				seg_beta[segNumber] = seg_beta[segNumber] + 2 * b_scale;
-			}
-			else
-			{
-				seg_beta[segNumber] = seg_beta[segNumber] + b_scale;
-			}
 		}
-		else if (joyRx < -0.05)
+		else
 		{
-			if (joyRx < -0.5)
+			if (joyLy > 0.05)
 			{
-				seg_beta[segNumber] = seg_beta[segNumber] - 2 * b_scale;
+				seg_alpha[segNumber] = seg_alpha[segNumber] + a_scale;
 			}
-			else
+			else if (joyLy < -0.05)
 			{
-				seg_beta[segNumber] = seg_beta[segNumber] - b_scale;
+				seg_alpha[segNumber] = seg_alpha[segNumber] - a_scale;
 			}
-		}
 
-		if (joyLT != 1 && joyRT != 1)
-		{
-		}
-		else if (abs(joyLT - 1) > 0.05)
-		{
-			if (abs(joyLT - 1) > 1)
+			if (joyRx > 0.05)
 			{
-				seg_length[segNumber] = seg_length[segNumber] + 2 * l_scale;
-			}
-			else
-			{
-				seg_length[segNumber] = seg_length[segNumber] + l_scale;
-			}
-		}
-		else if (abs(joyRT - 1) > 0.05)
-		{
-			if (abs(joyRT - 1) > 0.05)
-			{
-				if (abs(joyRT - 1) > 1)
+				if (joyRx > 0.5)
 				{
-					seg_length[segNumber] = seg_length[segNumber] - 2 * l_scale;
+					seg_beta[segNumber] = seg_beta[segNumber] + 2 * b_scale;
 				}
 				else
 				{
-					seg_length[segNumber] = seg_length[segNumber] - l_scale;
+					seg_beta[segNumber] = seg_beta[segNumber] + b_scale;
 				}
 			}
-		}
-	
-		for (int i = 0; i < 2; i++)
-		{
-			seg_beta[i] = constrain2PI(seg_beta[i]);
-			seg_alpha[i] = CONSTRAIN(seg_alpha[i], alphamin, alphamax);
-			seg_length[i] = CONSTRAIN(seg_length[i], lengthmin, lengthmax);
-		}
+			else if (joyRx < -0.05)
+			{
+				if (joyRx < -0.5)
+				{
+					seg_beta[segNumber] = seg_beta[segNumber] - 2 * b_scale;
+				}
+				else
+				{
+					seg_beta[segNumber] = seg_beta[segNumber] - b_scale;
+				}
+			}
+
+			if (joyLT != 1 && joyRT != 1)
+			{
+			}
+			else if (abs(joyLT - 1) > 0.05)
+			{
+				if (abs(joyLT - 1) > 1)
+				{
+					seg_length[segNumber] = seg_length[segNumber] + 2 * l_scale;
+				}
+				else
+				{
+					seg_length[segNumber] = seg_length[segNumber] + l_scale;
+				}
+			}
+			else if (abs(joyRT - 1) > 0.05)
+			{
+				if (abs(joyRT - 1) > 0.05)
+				{
+					if (abs(joyRT - 1) > 1)
+					{
+						seg_length[segNumber] = seg_length[segNumber] - 2 * l_scale;
+					}
+					else
+					{
+						seg_length[segNumber] = seg_length[segNumber] - l_scale;
+					}
+				}
+			}
+		
+			for (int i = 0; i < 2; i++)
+			{
+				seg_beta[i] = constrain2PI(seg_beta[i]);
+				seg_alpha[i] = CONSTRAIN(seg_alpha[i], alphamin, alphamax);
+				seg_length[i] = CONSTRAIN(seg_length[i], lengthmin, lengthmax);
+			}
+		}				
 	}			
 	else if (mode == 2)
 	{
-		if (joyLy > 0.05)
+		if (segNumber >= 4)
 		{
-			seg_alpha_[segNumber] = seg_alpha_[segNumber] + a_scale;
-		}
-		else if (joyLy < -0.05)
-		{
-			seg_alpha_[segNumber] = seg_alpha_[segNumber] - a_scale;
-		}
 
-		if (joyRx > 0.05)
-		{
-			if (joyRx > 0.5)
-			{
-				seg_beta_[segNumber] = seg_beta_[segNumber] + 2 * b_scale;
-			}
-			else
-			{
-				seg_beta_[segNumber] = seg_beta_[segNumber] + b_scale;
-			}
 		}
-		else if (joyRx < -0.05)
+		else
 		{
-			if (joyRx < -0.5)
+			if (joyLy > 0.05)
 			{
-				seg_beta_[segNumber] = seg_beta_[segNumber] - 2 * b_scale;
+				seg_alpha_[segNumber] = seg_alpha_[segNumber] + a_scale;
 			}
-			else
+			else if (joyLy < -0.05)
 			{
-				seg_beta_[segNumber] = seg_beta_[segNumber] - b_scale;
+				seg_alpha_[segNumber] = seg_alpha_[segNumber] - a_scale;
 			}
-		}
 
-		if (joyLT != 1 && joyRT != 1)
-		{
-		}
-		else if (abs(joyLT - 1) > 0.05)
-		{
-			if (abs(joyLT - 1) > 1)
+			if (joyRx > 0.05)
 			{
-				seg_length_[segNumber] = seg_length_[segNumber] + 2 * l_scale;
-			}
-			else
-			{
-				seg_length_[segNumber] = seg_length_[segNumber] + l_scale;
-			}
-		}
-		else if (abs(joyRT - 1) > 0.05)
-		{
-			if (abs(joyRT - 1) > 0.05)
-			{
-				if (abs(joyRT - 1) > 1)
+				if (joyRx > 0.5)
 				{
-					seg_length_[segNumber] = seg_length_[segNumber] - 2 * l_scale;
+					seg_beta_[segNumber] = seg_beta_[segNumber] + 2 * b_scale;
 				}
 				else
 				{
-					seg_length_[segNumber] = seg_length_[segNumber] - l_scale;
+					seg_beta_[segNumber] = seg_beta_[segNumber] + b_scale;
 				}
 			}
-		}
-	
-		for (int i = 0; i < 4; i++)
-		{
-			seg_beta_[i] = constrain2PI(seg_beta_[i]);
-			seg_alpha_[i] = CONSTRAIN(seg_alpha_[i], alphamin, alphamax);
-			seg_length_[i] = CONSTRAIN(seg_length_[i], lengthmin, lengthmax);
-		}
+			else if (joyRx < -0.05)
+			{
+				if (joyRx < -0.5)
+				{
+					seg_beta_[segNumber] = seg_beta_[segNumber] - 2 * b_scale;
+				}
+				else
+				{
+					seg_beta_[segNumber] = seg_beta_[segNumber] - b_scale;
+				}
+			}
+
+			if (joyLT != 1 && joyRT != 1)
+			{
+			}
+			else if (abs(joyLT - 1) > 0.05)
+			{
+				if (abs(joyLT - 1) > 1)
+				{
+					seg_length_[segNumber] = seg_length_[segNumber] + 2 * l_scale;
+				}
+				else
+				{
+					seg_length_[segNumber] = seg_length_[segNumber] + l_scale;
+				}
+			}
+			else if (abs(joyRT - 1) > 0.05)
+			{
+				if (abs(joyRT - 1) > 0.05)
+				{
+					if (abs(joyRT - 1) > 1)
+					{
+						seg_length_[segNumber] = seg_length_[segNumber] - 2 * l_scale;
+					}
+					else
+					{
+						seg_length_[segNumber] = seg_length_[segNumber] - l_scale;
+					}
+				}
+			}
+		
+			for (int i = 0; i < 4; i++)
+			{
+				seg_beta_[i] = constrain2PI(seg_beta_[i]);
+				seg_alpha_[i] = CONSTRAIN(seg_alpha_[i], alphamin, alphamax);
+				seg_length_[i] = CONSTRAIN(seg_length_[i], lengthmin, lengthmax);
+			}
+		}		
 	}	
 }
 
@@ -502,7 +519,6 @@ void Init_parameter()
 	}
 }
 
-
 void help_menu()
 {
 	cout << "===============================================================================" << endl;
@@ -523,6 +539,9 @@ void help_menu()
 	cout << " save data into file    |"
 		 << " LB  |"
 		 << "                                        " << endl;
+	cout <<	" reset to initial value |"
+		 <<" back|"
+		 << "                                        " << endl;  
 	cout << "                                                                               " << endl;
 	cout << "===============================================================================" << endl;
 }
@@ -539,8 +558,9 @@ int main(int argc, char **argv)
 	ros::Publisher pub2 = nh.advertise<origarm_uw::modenumber>("modenumber", 100);
 	ros::Publisher pub3 = nh.advertise<origarm_uw::segnumber>("segnumber", 100);
 
-	trajPointFileName = "trajp_" + getTimeString();
-	savedata.open("/home/ubuntu/catkin_ws/src/origarm_uw/data/" + trajPointFileName + ".txt", ios::trunc);
+	trajPointFilePath = ros::package::getPath("origarm_uw") + "/data/";
+	trajPointFileName = "trajp_" + getTimeString() + ".txt";
+	savedata.open(trajPointFilePath + trajPointFileName, ios::trunc);
 
 	Init_parameter();
 
@@ -576,9 +596,9 @@ int main(int argc, char **argv)
 		{
 			for (int i = 0; i < 4; i++)
 			{
-				Cmd_ABL.segment[i].A = alpha*4;
+				Cmd_ABL.segment[i].A = alpha;
 				Cmd_ABL.segment[i].B = beta;
-				Cmd_ABL.segment[i].L = length*4;
+				Cmd_ABL.segment[i].L = length;
 			}
 
 			printf("ABL1: alpha: %f, beta: %f, length: %f\r\n", alpha, beta, length);
@@ -589,15 +609,15 @@ int main(int argc, char **argv)
 		{
 			for (int i = 0; i < 2; i++)
 			{
-				Cmd_ABL.segment[i].A = seg_alpha[0]*2;
+				Cmd_ABL.segment[i].A = seg_alpha[0];
 				Cmd_ABL.segment[i].B = seg_beta[0];
-				Cmd_ABL.segment[i].L = seg_length[0]*2;				
+				Cmd_ABL.segment[i].L = seg_length[0];				
 			}
 			for (int i = 2; i < 4; i++)
 			{
-				Cmd_ABL.segment[i].A = seg_alpha[1]*2;
+				Cmd_ABL.segment[i].A = seg_alpha[1];
 				Cmd_ABL.segment[i].B = seg_beta[1];
-				Cmd_ABL.segment[i].L = seg_length[1]*2;	
+				Cmd_ABL.segment[i].L = seg_length[1];	
 			}
 
 			for (int i = 0; i < 2; i++)

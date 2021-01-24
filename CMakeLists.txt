@@ -13,6 +13,7 @@ find_package(catkin REQUIRED
   std_msgs
   geometry_msgs
   message_generation
+  roslib
 )
 
 find_package(cmake_modules REQUIRED)
@@ -238,3 +239,14 @@ target_link_libraries(keyboard_node
    ${catkin_LIBRARIES}
  )
 
+add_executable(demo_traj src/demo_traj.cpp) 
+add_dependencies(demo_traj ${${PROJECT_NAME}_EXPORTED_TARGETS} ${catkin_EXPORTED_TARGETS} )
+target_link_libraries(demo_traj             
+   ${catkin_LIBRARIES}
+ )
+
+add_executable(demo_traj_regenerate src/demo_traj_regenerate.cpp) 
+add_dependencies(demo_traj_regenerate ${${PROJECT_NAME}_EXPORTED_TARGETS} ${catkin_EXPORTED_TARGETS} )
+target_link_libraries(demo_traj_regenerate             
+   ${catkin_LIBRARIES}
+ )
