@@ -510,28 +510,15 @@ void help_menu()
 	cout << "-------------------------------------------------------------------------------" << endl;
 	cout << "           MODE         |"
 		 << " KEY |                    KEYCODE                 " << endl;
-	cout << " 0: 1 segment abl      |"
+	cout << " 0: 1 segment abl       |"
 		 << " A   |"
 		 << "  alpha  +: joyLy +, alpha  -: joyLy -; " << endl;
-	cout << " 1: 3 segment abl       |"
+	cout << " 1: 2 segment abl       |"
 		 << " B   |"
 		 << "  beta   +: joyRx +, beta   -: joyRx -; " << endl;
-	cout << " 2: 6 segment abl       |"
-		 << " X   |"
-		 << "  length +: joyLT  , length -: joyRT  ; " << endl;
-	cout << "                                                                               " << endl;
-	cout << " 3: 2 segment abl       |"
+	cout << " 2: 4 segment abl       |"
 		 << " Y   |"
-		 << "  x+: joyRx +, x-: joyRx -;             " << endl;
-	// cout << " 3: 1 segment xyz(test) |"
-	// 	 << " Y   |"
-	// 	 << "  x+: joyRx +, x-: joyRx -;             " << endl;
-	cout << " 4: 6 segment xyz       |"
-		 << " RB  |"
-		 << "  y+: joyRy +, y-: joyRy -;             " << endl;
-	cout << "                        |"
-		 << "     |"
-		 << "  z+: joyLy +, z-: joyLy -;             " << endl;
+		 << "  length +: joyLT  , length -: joyRT  ; " << endl;
 	cout << "                                                                               " << endl;
 	cout << " save data into file    |"
 		 << " LB  |"
