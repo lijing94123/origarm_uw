@@ -174,7 +174,7 @@ class ABL_controller
         bjoy[i] = msg.segment[i].B;
         ljoy[i] = msg.segment[i].L;    
       }
-      ROS_INFO("GET ABL Command from JOY!");
+      // ROS_INFO("GET ABL Command from JOY!");
   }
    
     void pub()
@@ -185,6 +185,21 @@ class ABL_controller
         {
           Cmd_P_O.segment[i].command[j].pressure = pressureD[i][j]/100;     //send hPa to spi_node 
           Cmd_P_O.segment[i].command[j].valve    = 1;                       //bool == 1, commandType == pressureCommandType
+
+          // Send command to arduino
+          if (pressureD[i][j] > 0)
+          {
+            Cmd_P_O.segment[i].command[j].cmd_arduino = 1;
+          }
+          else if (pressureD[i][j] < 0)
+          {
+            Cmd_P_O.segment[i].command[j].cmd_arduino = -1;
+          }
+          else
+          {
+            Cmd_P_O.segment[i].command[j].cmd_arduino = 0;
+          }
+
         }
       }
 
