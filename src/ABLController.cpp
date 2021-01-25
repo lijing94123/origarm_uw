@@ -185,7 +185,6 @@ class ABL_controller
         for (int j = 0; j < ACTNUM; j++)
         {
           command_arm.segment[i].actuator[j].pressure  = pressureD[i][j]/100;     //send KPa to spi_node 
-
         }
       }
 

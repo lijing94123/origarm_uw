@@ -15,7 +15,6 @@
 
 using namespace std;
 
-
 std::string exeCMD(const char* cmd){
 	char buffer[128];
 	std::string result="";
