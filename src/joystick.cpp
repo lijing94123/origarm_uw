@@ -12,9 +12,8 @@
 #include <string.h>
 #include <linux/input-event-codes.h>
 
-#include "origarm_uw/Command_ABL.h"
-#include "origarm_uw/Seg_ABL.h"
-#include "origarm_uw/Command_Position.h"
+#include "origarm_uw/Command_ABL_Arm.h"
+#include "origarm_uw/Command_Position_Arm.h"
 #include "origarm_uw/keynumber.h"
 #include "origarm_uw/modenumber.h"
 #include "origarm_uw/segnumber.h"
@@ -554,7 +553,7 @@ int main(int argc, char **argv)
 	
 	ros::Subscriber sub1 = nh.subscribe("joy", 1, joyCallback);
 	ros::Subscriber sub2 = nh.subscribe("key_number", 1, keyCallback);
-	ros::Publisher pub1 = nh.advertise<origarm_uw::Command_ABL>("Cmd_ABL_joy", 100);
+	ros::Publisher pub1 = nh.advertise<origarm_uw::Command_ABL_Arm>("Cmd_ABL_joy", 100);
 	ros::Publisher pub2 = nh.advertise<origarm_uw::modenumber>("modenumber", 100);
 	ros::Publisher pub3 = nh.advertise<origarm_uw::segnumber>("segnumber", 100);
 
@@ -584,7 +583,7 @@ int main(int argc, char **argv)
 			//ROS_INFO("status: %d", status);
 		}
 
-		origarm_uw::Command_ABL Cmd_ABL;
+		origarm_uw::Command_ABL_Arm Cmd_ABL;
 		origarm_uw::modenumber modenumber;
 		modenumber.modeNumber = mode;
 		modenumber.status = status;

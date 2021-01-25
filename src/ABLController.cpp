@@ -1,11 +1,12 @@
 #include "ros/ros.h"
-#include "origarm_uw/Command_Pre_Open.h"
-#include "origarm_uw/Command_ABL.h"
+#include "origarm_uw/Command_Arm.h"
+#include "origarm_uw/Command_ABL_Arm.h"
 
 #include "myPID.h"
 #include "PID_controller.cpp"
 #include "myData.h"
 
+ 
 float b1[SEGNUM];
 float btem[SEGNUM];
 float b2[SEGNUM];
@@ -163,10 +164,10 @@ class ABL_controller
     ABL_controller()
     {
       sub1_ = n_.subscribe("Cmd_ABL_joy", 1, &ABL_controller::ABL_joy, this);
-      pub_ = n_.advertise<origarm_uw::Command_Pre_Open>("Command_Pre_Open", 100);
+      pub_ = n_.advertise<origarm_uw::Command_Arm>("Command_Arm", 100);
     }
 
-    void ABL_joy(const origarm_uw::Command_ABL& msg)
+    void ABL_joy(const origarm_uw::Command_ABL_Arm& msg)
     {
       for (int i = 0; i < SEGNUM; i++)
       {
@@ -183,27 +184,12 @@ class ABL_controller
       {
         for (int j = 0; j < ACTNUM; j++)
         {
-          Cmd_P_O.segment[i].command[j].pressure = pressureD[i][j]/100;     //send hPa to spi_node 
-          Cmd_P_O.segment[i].command[j].valve    = 1;                       //bool == 1, commandType == pressureCommandType
-
-          // Send command to arduino
-          if (pressureD[i][j] > 0)
-          {
-            Cmd_P_O.segment[i].command[j].cmd_arduino = 1;
-          }
-          else if (pressureD[i][j] < 0)
-          {
-            Cmd_P_O.segment[i].command[j].cmd_arduino = -1;
-          }
-          else
-          {
-            Cmd_P_O.segment[i].command[j].cmd_arduino = 0;
-          }
+          command_arm.segment[i].actuator[j].pressure  = pressureD[i][j]/100;     //send KPa to spi_node 
 
         }
       }
 
-      pub_.publish(Cmd_P_O);
+      pub_.publish(command_arm);
     }
 
     private:
@@ -211,8 +197,7 @@ class ABL_controller
       ros::Subscriber sub1_;
       ros::Publisher pub_ ;
 
-      origarm_uw::Command_Pre_Open Cmd_P_O;
-      origarm_uw::Command_ABL Command_ABL;
+      origarm_uw::Command_Arm command_arm;
 
   };
 

@@ -1,2 +1,2 @@
-origarm_uw/Command_ABL ABL
+origarm_uw/Command_ABL_Arm abl_arm
 geometry_msgs/Pose pose

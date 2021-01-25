@@ -12,7 +12,7 @@
 #include <Eigen/Eigen>
 #include <linux/input-event-codes.h>
 
-#include "origarm_uw/Command_ABL.h"
+#include "origarm_uw/Command_ABL_Arm.h"
 #include "origarm_uw/modenumber.h"
 #include "origarm_uw/segnumber.h"
 #include "origarm_uw/keynumber.h"
@@ -222,9 +222,9 @@ int main(int argc, char **argv)
 	ros::NodeHandle nh;	
 	ros::Rate r(100);     //Hz
 
-	ros::Publisher  pub1 = nh.advertise<origarm_uw::Command_ABL>("Cmd_ABL_joy", 100);
+	ros::Publisher  pub1 = nh.advertise<origarm_uw::Command_ABL_Arm>("Cmd_ABL_joy", 100);
 	ros::Subscriber key_sub_ = nh.subscribe("key_number", 1, keyCallback);
-	origarm_uw::Command_ABL Command_ABL_demo;	
+	origarm_uw::Command_ABL_Arm Command_ABL_demo;	
 
 	readFromFile();
 
