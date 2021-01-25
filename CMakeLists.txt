@@ -49,18 +49,18 @@ find_package(cmake_modules REQUIRED)
 
 ## Generate messages in the 'msg' folder
 add_message_files(FILES
-  Command_Position.msg
-  Command_ABL.msg
-  Command_Pre_Open.msg
+  Command_Pressure_Act.msg
+  Command_Pressure_Seg.msg
+  Command_ABL_Seg.msg
+  Command_ABL_Arm.msg
+  Command_Position_Arm.msg
+  Command_Arm.msg
 
-  Seg_ABL.msg
-  Seg_Pre.msg
-  Valve.msg
+  Sensor_Act.msg
+  Sensor_Seg.msg
+  Sensor_Arm.msg
 
   States.msg
-  Sensor.msg
-  Sensor_Seg.msg
-  Sensor_Act.msg
 
   keynumber.msg
   modenumber.msg
