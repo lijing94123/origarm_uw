@@ -25,7 +25,7 @@ using namespace std;
 
 ifstream inFile;
 string GivenDataFilePath = ros::package::getPath("origarm_uw") + "/data/";
-string GivenDataFileName = "demo_traj_1.txt";
+string GivenDataFileName = "trajp_1.txt";
 
 const int ms = 1000;  //1ms
 int ts[] = {5*ms, 10*ms, 60*ms, 10*ms};
@@ -36,7 +36,7 @@ float a_in[SEGMENTNUM], b_in[SEGMENTNUM], l_in[SEGMENTNUM];
 
 int flag_start = 0;
 int period = 100;
-int repeat = 12;  // whole repeat times
+int repeat = 10;  // whole repeat times
 int num = 0;     // smallest step number
 int loop_no = 0; // to which step exactly
 

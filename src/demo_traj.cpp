@@ -16,10 +16,9 @@
 #include "myData.h"
 
 using namespace std;
-
-int ts = 2000000;     //time sleep at each step
+     
 const int mt = 1000; //1ms
-int tstep[]={1000*mt, 5000*mt, 5000*mt, 5000*mt, 5000*mt, 5000*mt, 5000*mt, 5000*mt};
+int tstep[]={1000*mt, 1000*mt, 1000*mt, 1000*mt, 1000*mt, 1000*mt, 5000*mt, 5000*mt}; //time sleep at each step
 int k = 0;
 int repeat = 1;
 
@@ -111,6 +110,19 @@ int main(int argc, char **argv)
 				repeat = repeat - 1;
 				k = 0;
 			}
+			else
+			{
+				for (int i = 0; i < SEGMENTNUM; i++)
+				{
+					Command_ABL_demo.segment[i].A = 0;
+					Command_ABL_demo.segment[i].B = 0;
+					Command_ABL_demo.segment[i].L = length0;
+				}
+				
+				pub1.publish(Command_ABL_demo);
+				pub2.publish(moden);
+			}
+			
 		}		
 		else
 		{

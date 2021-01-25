@@ -1,6 +1,6 @@
 <launch>
-	<param name = "repeat" type = "int" value = "1"/> 
+	<param name = "repeat" type = "int" value = "2"/> 
     <node pkg="origarm_uw" name="keyboard_node" type="keyboard_node" launch-prefix="xterm -e"/> 
-	<node pkg="origarm_uw" name="demo_traj" type="demo_traj"/>      
+	<node pkg="origarm_uw" name="demo_traj" type="demo_traj" output = "screen"/>      
     <node pkg="origarm_uw" name="ABL_controller_Node" type="ABLController"/> 
 </launch>
